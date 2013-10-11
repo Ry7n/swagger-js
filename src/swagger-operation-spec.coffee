@@ -217,3 +217,22 @@ describe 'Operations for version 1.2 spec', ->
     it "gets help() from the file upload operation", ->
       operation = swagger.pet.operations.uploadFile
       expect(operation.help().trim()).toBe "* additionalMetadata - Additional data to pass to server\n* file - file to upload"
+
+  describe "resolves relative urls", ->
+    args = {}
+    stub =
+      pathJson: ->
+        ""
+      parameters: args
+      resource:
+        basePath: "/bar"
+
+    it "resolves protocol-relative URLs", ->
+      stub.resource.basePath = "//foo.com/bar"
+      url = SwaggerOperation.prototype.urlify.call(stub, args)
+      expect(url).toBe "#{window.location.protocol}#{stub.resource.basePath}"
+
+    it "resolves root-relative URLs", ->
+      stub.resource.basePath = "/foo"
+      url = SwaggerOperation.prototype.urlify.call(stub, args)
+      expect(url).toBe "#{window.location.protocol}//#{window.location.host}#{stub.resource.basePath}"

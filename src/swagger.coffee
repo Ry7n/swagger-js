@@ -651,6 +651,13 @@ class SwaggerOperation
 
     url += ("?" + queryParams) if queryParams? and queryParams.length > 0
 
+    # in browser environments, resolve relative URLs
+    if url.indexOf("/") is 0 and typeof window != 'undefined' and window.location
+      loc = window.location
+      # if it's a protocol-relative URL, append the protocol
+      # otherwise it's a root-relative URL, append the protocol and hostname
+      url = if url.indexOf("//") is 0 then "#{loc.protocol}#{url}" else "#{loc.protocol}//#{loc.host}#{url}"
+
     url
 
   # expose default headers
