@@ -27,7 +27,7 @@
     "shred": "0.8.9"
   },
   "devDependencies": {
-    "coffee-script": "~1.5.0"
+    "coffee-script": "~1.4.0"
   },
   "license": "apache 2.0"
 }
